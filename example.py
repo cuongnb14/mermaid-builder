@@ -59,6 +59,7 @@ def test_sequence_diagram():
     runner.deactivate()
 
     diagram.save("./outputs/sequence_diagram.mmd")
+    print(diagram.get_mermaid_live_url())
 
 
 test_sequence_diagram()

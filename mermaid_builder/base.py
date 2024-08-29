@@ -1,6 +1,8 @@
 import json
 from dataclasses import dataclass
 
+from mermaid_builder.utils import get_mermaid_live_url
+
 INTENT_CHAR = '  '
 
 
@@ -66,3 +68,6 @@ class BaseDiagram:
     def save(self, file_path):
         with open(file_path, "w") as file:
             file.write(self.draw())
+
+    def get_mermaid_live_url(self):
+        return get_mermaid_live_url(self.draw())
