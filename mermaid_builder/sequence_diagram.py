@@ -21,6 +21,7 @@ class Fragment:
     CRITICAL = "critical"
     BREAK = "break"
     BACKGROUND = "rect"
+    OPTION = "opt"
 
 
 class SequenceDiagram(BaseDiagram):
@@ -55,6 +56,15 @@ class SequenceDiagram(BaseDiagram):
                 self.records.append(f"end")
 
         return loop_context_manager()
+
+    def fm_else(self, name=""):
+        self.records.append(f"else {name}")
+
+    def fm_and(self, name):
+        self.records.append(f"and {name}")
+
+    def fm_option(self, name):
+        self.records.append(f"option {name}")
 
 
 class Participant:
