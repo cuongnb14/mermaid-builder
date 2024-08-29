@@ -30,6 +30,10 @@ class SequenceDiagram(BaseDiagram):
         result.extend([f"{INTENT_CHAR}{x}" for x in self.records])
         return "\n".join(result)
 
+    def note_over(self, text, *participants):
+        p = ", ".join([p.name for p in participants])
+        self.records.append(f"Note over {p}: {text}")
+
 
 class Participant:
     def __init__(self, sequence_diagram, name, is_actor=False):
@@ -46,6 +50,9 @@ class Participant:
 
     def return_message(self, to, message, state=''):
         self.sequence_diagram.records.append(f"{self.name}{Arrow.RETURN}{state}{to.name}:{message}")
+
+    def self_message(self, message):
+        self.sequence_diagram.records.append(f"{self.name}{Arrow.SYNC}{self.name}:{message}")
 
     def note(self, text, is_left=False):
         if is_left:

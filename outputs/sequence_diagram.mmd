@@ -14,6 +14,7 @@ sequenceDiagram
   MCR--)-Github Runner:ok
   Github Runner->>AKS:Check existing install
   Note right of AKS: Conditionally<br/>Force Uninstall
+  Note over Github Runner, AKS: optional
   Github Runner->>AKS:Helm Install dry run
   Github Runner->>AKS:Helm Install
   Github Runner->>+AKS:Check deployment status

@@ -46,6 +46,7 @@ def test_sequence_diagram():
 
     runner.sync_message(aks, message="Check existing install")
     aks.note("Conditionally<br/>Force Uninstall")
+    diagram.note_over("optional", runner, aks)
     runner.sync_message(aks, message="Helm Install dry run")
     runner.sync_message(aks, message="Helm Install")
     runner.sync_message(aks, message="Check deployment status", state=sd.State.ACTIVATE)
