@@ -1,0 +1,9 @@
+---
+title: Simple Sequence Diagram
+---
+%%{init: {"theme": "light", "themeVariables": {"fontFamily": "Monospace"}}}%%
+sequenceDiagram
+  actor Github Runner
+  participant Azure
+  Github Runner->>Azure:Login
+  Azure--)Github Runner:Token

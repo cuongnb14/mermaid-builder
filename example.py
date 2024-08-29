@@ -1,5 +1,6 @@
+from mermaid_builder.base import Color, Icon
 from mermaid_builder.flowchart import *
-
+from mermaid_builder import sequence_diagram as sd
 
 def test_flowchart():
     chart = Flowchart(title="Simple Flowchart")
@@ -23,7 +24,17 @@ def test_flowchart():
     chart.add_items(user_node, order_node, subgraph, payment_node, redis_node, elb_node)
     chart.add_styles(Style(class_name="api", fill=Color.ORANGE, color=Color.WHITE))
 
-    chart.save("./outputs/example.mmd")
+    chart.save("./outputs/flowchart.mmd")
 
 
+def test_sequence_diagram():
+    diagram = sd.SequenceDiagram(title="Simple Sequence Diagram")
+    runner = sd.Participant(sequence_diagram=diagram, name="Github Runner", is_actor=True)
+    azure = sd.Participant(sequence_diagram=diagram, name="Azure")
+    runner.sync_message(azure, message="Login")
+    azure.return_message(runner, message="Token")
+    diagram.save("./outputs/sequence_diagram.mmd")
+
+
+test_sequence_diagram()
 test_flowchart()

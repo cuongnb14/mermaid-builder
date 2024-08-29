@@ -1,53 +1,11 @@
-import enum
-import json
 from dataclasses import dataclass
 
-INTENT_CHAR = '  '
-
-
-class Color:
-    GREEN = "#789e3e"
-    BLUE = "#2873ba"
-    YELLOW = "#daa840"
-    ORANGE = "#e07941 "
-    PURPLE = "#800080"
-    RED = "#FF0000"
-    CYAN = "#00FFFF"
-    MAGENTA = "#FF00FF"
-    WHITE = "#FFFFFF"
-    BLACK = "#000000"
-
-
-class Icon:
-    USER = "fa:fa-user"
-    DATABASE = "fa:fa-database"
-    SERVER = "fa:fa-server"
-    STREAM = "fa:fa-stream"
-    FILE = "fa:fa-file"
-    LOAD_BALANCER = "fa:fa-sitemap"
-    SHIELD = "fa:fa-shield-alt"
-    MOBILE = "fa:fa-mobile"
-    LAPTOP = "fa:fa-laptop"
+from .base import INTENT_CHAR, Theme, BaseDiagram
 
 
 class Direction:
     LR = 'LR'
     TB = 'TB'
-
-
-@dataclass
-class Theme:
-    name: str = "light"
-    font_family: str = "Monospace"
-
-    def draw(self):
-        data = {
-            "theme": self.name,
-            "themeVariables": {
-                "fontFamily": self.font_family,
-            },
-        }
-        return json.dumps(data)
 
 
 class NodeShape:
@@ -176,14 +134,9 @@ class Style:
         return f"classDef {self.class_name} fill:{self.fill},color:{self.color}"
 
 
-class Flowchart(object):
-    def __init__(self, title, direction=Direction.LR, theme: Theme = None):
-        if theme is None:
-            self.theme = Theme()
-        else:
-            self.theme = theme
-
-        self.title = title
+class Flowchart(BaseDiagram):
+    def __init__(self, title, theme: Theme = None, direction=Direction.LR):
+        super().__init__(title, theme)
         self.direction = direction
         self.items = []
         self.styles = []
@@ -196,10 +149,7 @@ class Flowchart(object):
 
     def draw(self):
         result = [
-            "---",
-            "title: " + self.title,
-            "---",
-            "%%{init: " + self.theme.draw() + "}%%",
+            *self.get_header_lines(),
             f"flowchart {self.direction}",
         ]
 
@@ -210,7 +160,3 @@ class Flowchart(object):
             result.append(style.draw())
 
         return "\n".join(result)
-
-    def save(self, file_path):
-        with open(file_path, "w") as file:
-            file.write(self.draw())
