@@ -78,7 +78,7 @@ Example
 
 **Output**
 
-.. code::
+.. code-block:: mermaid
 
     ---
     title: Simple Flowchart
@@ -99,7 +99,7 @@ Example
     classDef api fill:#e07941 ,color:#FFFFFF
     classDef storage fill:#789e3e,color:#FFFFFF
 
-.. code::
+.. code-block:: mermaid
 
     ---
     title: Simple Sequence Diagram
