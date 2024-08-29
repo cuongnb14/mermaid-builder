@@ -121,16 +121,21 @@ Example
       participant MCR
       participant AKS
       Github Runner->>+Azure:Login
+      activate Github Runner
       Azure--)-Github Runner:Token
       Github Runner->>+MCR:Push docker image
       MCR--)-Github Runner:ok
       Github Runner->>AKS:Check existing install
       Note right of AKS: Conditionally<br/>Force Uninstall
+      Note over Github Runner, AKS: optional
       Github Runner->>AKS:Helm Install dry run
       Github Runner->>AKS:Helm Install
       Github Runner->>+AKS:Check deployment status
       AKS->>+MCR:Pull docker image
       MCR--)-AKS:docker image
       AKS->>AKS:Deploy app
-      AKS->>AKS:Wait for IP Address
+      loop Wait
+      AKS->>AKS:Check IP Address
+      end
       AKS--)-Github Runner:IP Address
+      deactivate Github Runner
