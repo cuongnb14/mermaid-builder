@@ -35,6 +35,7 @@ class Icon:
 class Theme:
     name: str = "light"
     font_family: str = "Monospace"
+    sequence_show_number: bool = False
 
     def draw(self):
         data = {
@@ -43,6 +44,10 @@ class Theme:
                 "fontFamily": self.font_family,
             },
         }
+        if self.sequence_show_number:
+            data["sequence"] = {
+                "showSequenceNumbers": self.sequence_show_number,
+            }
         return json.dumps(data)
 
 

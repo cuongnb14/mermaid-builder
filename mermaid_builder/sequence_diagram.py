@@ -1,3 +1,5 @@
+from contextlib import contextmanager
+
 from .base import INTENT_CHAR, BaseDiagram
 
 
@@ -10,6 +12,15 @@ class Arrow:
 class State:
     ACTIVATE = "+"
     DEACTIVATE = "-"
+
+
+class Fragment:
+    LOOP = "loop"
+    ALT = "alt"
+    PARALLEL = "par"
+    CRITICAL = "critical"
+    BREAK = "break"
+    BACKGROUND = "rect"
 
 
 class SequenceDiagram(BaseDiagram):
@@ -33,6 +44,17 @@ class SequenceDiagram(BaseDiagram):
     def note_over(self, text, *participants):
         p = ", ".join([p.name for p in participants])
         self.records.append(f"Note over {p}: {text}")
+
+    def fragment(self, fg_type, name):
+        @contextmanager
+        def loop_context_manager():
+            self.records.append(f"{fg_type} {name}")
+            try:
+                yield
+            finally:
+                self.records.append(f"end")
+
+        return loop_context_manager()
 
 
 class Participant:

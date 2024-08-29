@@ -31,6 +31,8 @@ def test_flowchart():
 
 def test_sequence_diagram():
     diagram = sd.SequenceDiagram(title="Simple Sequence Diagram")
+
+    # Add Participants
     runner = sd.Participant(sequence_diagram=diagram, name="Github Runner", is_actor=True)
     azure = sd.Participant(sequence_diagram=diagram, name="Azure")
     mcr = sd.Participant(sequence_diagram=diagram, name="MCR")
@@ -55,7 +57,9 @@ def test_sequence_diagram():
     mcr.return_message(aks, message="docker image", state=sd.State.DEACTIVATE)
     aks.sync_message(aks, message="Deploy app")
 
-    aks.sync_message(aks, message="Wait for IP Address")
+    with diagram.fragment(sd.Fragment.LOOP, "Wait") as _:
+        aks.sync_message(aks, message="Check IP Address")
+
     aks.return_message(runner, message="IP Address", state=sd.State.DEACTIVATE)
     runner.deactivate()
 

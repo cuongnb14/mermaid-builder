@@ -21,6 +21,8 @@ sequenceDiagram
   AKS->>+MCR:Pull docker image
   MCR--)-AKS:docker image
   AKS->>AKS:Deploy app
-  AKS->>AKS:Wait for IP Address
+  loop Wait
+  AKS->>AKS:Check IP Address
+  end
   AKS--)-Github Runner:IP Address
   deactivate Github Runner
