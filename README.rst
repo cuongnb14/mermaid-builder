@@ -4,9 +4,9 @@ Mermaid builder
 Install
 =======
 
-::
+.. code-block::
 
-    pip install git+https://github.com/cuongnb14/mermaid-builder.git@v1.0#egg=mermaid-builder
+    pip install git+https://github.com/cuongnb14/mermaid-builder.git@main#egg=mermaid-builder
 
 Example
 =======
