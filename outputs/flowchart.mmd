@@ -4,14 +4,15 @@ title: Simple Flowchart
 %%{init: {"theme": "light", "themeVariables": {"fontFamily": "Monospace"}}}%%
 flowchart LR
   user(fa:fa-user User)--> |call|elb(fa:fa-sitemap ELB)
-  order_service(Order Service):::api-->redis(Redis)
-  order_service(Order Service):::api-->db(DB)
+  order_service(Order Service):::api-->redis(Redis):::storage
+  order_service(Order Service):::api-->db(fa:fa-database DB):::storage
   subgraph storage [Storage]
     direction TB
-    redis(Redis)
-    db(DB)
+    redis(Redis):::storage
+    db(fa:fa-database DB):::storage
   end
   payment_service(Payment Service):::api-->storage
   elb(fa:fa-sitemap ELB)-->order_service(Order Service):::api
   elb(fa:fa-sitemap ELB)-->payment_service(Payment Service):::api
 classDef api fill:#e07941 ,color:#FFFFFF
+classDef storage fill:#789e3e,color:#FFFFFF

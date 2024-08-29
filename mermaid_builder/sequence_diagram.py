@@ -6,9 +6,11 @@ class Arrow:
     ASYNC = "-)"
     RETURN = "--)"
 
+
 class State:
     ACTIVATE = "+"
     DEACTIVATE = "-"
+
 
 class SequenceDiagram(BaseDiagram):
     def __init__(self, title, theme=None):
