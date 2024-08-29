@@ -8,6 +8,7 @@ sequenceDiagram
   participant MCR
   participant AKS
   Github Runner->>+Azure:Login
+  activate Github Runner
   Azure--)-Github Runner:Token
   Github Runner->>+MCR:Push docker image
   MCR--)-Github Runner:ok
@@ -21,3 +22,4 @@ sequenceDiagram
   AKS->>AKS:Deploy app
   AKS->>AKS:Wait for IP Address
   AKS--)-Github Runner:IP Address
+  deactivate Github Runner

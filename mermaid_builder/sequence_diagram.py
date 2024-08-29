@@ -53,3 +53,9 @@ class Participant:
         else:
             r = f"Note right of {self.name}: {text}"
         self.sequence_diagram.records.append(r)
+
+    def activate(self):
+        self.sequence_diagram.records.append(f"activate {self.name}")
+
+    def deactivate(self):
+        self.sequence_diagram.records.append(f"deactivate {self.name}")

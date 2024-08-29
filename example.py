@@ -37,6 +37,8 @@ def test_sequence_diagram():
     aks = sd.Participant(sequence_diagram=diagram, name="AKS")
 
     runner.sync_message(azure, message="Login", state=sd.State.ACTIVATE)
+    runner.activate()
+
     azure.return_message(runner, message="Token", state=sd.State.DEACTIVATE)
 
     runner.sync_message(mcr, message="Push docker image", state=sd.State.ACTIVATE)
@@ -54,6 +56,7 @@ def test_sequence_diagram():
 
     aks.sync_message(aks, message="Wait for IP Address")
     aks.return_message(runner, message="IP Address", state=sd.State.DEACTIVATE)
+    runner.deactivate()
 
     diagram.save("./outputs/sequence_diagram.mmd")
 
