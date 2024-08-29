@@ -31,8 +31,29 @@ def test_sequence_diagram():
     diagram = sd.SequenceDiagram(title="Simple Sequence Diagram")
     runner = sd.Participant(sequence_diagram=diagram, name="Github Runner", is_actor=True)
     azure = sd.Participant(sequence_diagram=diagram, name="Azure")
-    runner.sync_message(azure, message="Login")
-    azure.return_message(runner, message="Token")
+    mcr = sd.Participant(sequence_diagram=diagram, name="MCR")
+    aks = sd.Participant(sequence_diagram=diagram, name="AKS")
+
+    runner.sync_message(azure, message="Login", state=sd.State.ACTIVATE)
+    azure.return_message(runner, message="Token", state=sd.State.DEACTIVATE)
+
+    runner.sync_message(mcr, message="Push docker image", state=sd.State.ACTIVATE)
+    mcr.return_message(runner, message="ok", state=sd.State.DEACTIVATE)
+
+    runner.sync_message(aks, message="Check existing install")
+    aks.note("Conditionally<br/>Force Uninstall")
+    runner.sync_message(aks, message="Helm Install dry run")
+    runner.sync_message(aks, message="Helm Install")
+    runner.sync_message(aks, message="Check deployment status", state=sd.State.ACTIVATE)
+
+    aks.sync_message(mcr, message="Pull docker image", state=sd.State.ACTIVATE)
+    mcr.return_message(aks, message="docker image", state=sd.State.DEACTIVATE)
+    aks.sync_message(aks, message="Deploy app")
+
+    aks.sync_message(aks, message="Wait for IP Address")
+    aks.return_message(runner, message="IP Address", state=sd.State.DEACTIVATE)
+
+
     diagram.save("./outputs/sequence_diagram.mmd")
 
 

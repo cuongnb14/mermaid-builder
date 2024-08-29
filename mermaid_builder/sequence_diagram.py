@@ -6,6 +6,9 @@ class Arrow:
     ASYNC = "-)"
     RETURN = "--)"
 
+class State:
+    ACTIVATE = "+"
+    DEACTIVATE = "-"
 
 class SequenceDiagram(BaseDiagram):
     def __init__(self, title, theme=None):
@@ -33,11 +36,18 @@ class Participant:
         self.is_actor = is_actor
         self.sequence_diagram.participants.append(self)
 
-    def sync_message(self, to, message):
-        self.sequence_diagram.records.append(f"{self.name}{Arrow.SYNC}{to.name}:{message}")
+    def sync_message(self, to, message, state=''):
+        self.sequence_diagram.records.append(f"{self.name}{Arrow.SYNC}{state}{to.name}:{message}")
 
-    def async_message(self, to, message):
-        self.sequence_diagram.records.append(f"{self.name}{Arrow.ASYNC}{to.name}:{message}")
+    def async_message(self, to, message, state=''):
+        self.sequence_diagram.records.append(f"{self.name}{Arrow.ASYNC}{state}{to.name}:{message}")
 
-    def return_message(self, to, message):
-        self.sequence_diagram.records.append(f"{self.name}{Arrow.RETURN}{to.name}:{message}")
+    def return_message(self, to, message, state=''):
+        self.sequence_diagram.records.append(f"{self.name}{Arrow.RETURN}{state}{to.name}:{message}")
+
+    def note(self, text, is_left=False):
+        if is_left:
+            r = f"Note left of {self.name}: {text}"
+        else:
+            r = f"Note right of {self.name}: {text}"
+        self.sequence_diagram.records.append(r)

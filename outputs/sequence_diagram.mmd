@@ -5,5 +5,19 @@ title: Simple Sequence Diagram
 sequenceDiagram
   actor Github Runner
   participant Azure
-  Github Runner->>Azure:Login
-  Azure--)Github Runner:Token
+  participant MCR
+  participant AKS
+  Github Runner->>+Azure:Login
+  Azure--)-Github Runner:Token
+  Github Runner->>+MCR:Push docker image
+  MCR--)-Github Runner:ok
+  Github Runner->>AKS:Check existing install
+  Note right of AKS: Conditionally<br/>Force Uninstall
+  Github Runner->>AKS:Helm Install dry run
+  Github Runner->>AKS:Helm Install
+  Github Runner->>+AKS:Check deployment status
+  AKS->>+MCR:Pull docker image
+  MCR--)-AKS:docker image
+  AKS->>AKS:Deploy app
+  AKS->>AKS:Wait for IP Address
+  AKS--)-Github Runner:IP Address
