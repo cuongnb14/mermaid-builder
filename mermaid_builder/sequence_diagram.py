@@ -83,13 +83,25 @@ class Participant:
     def set_sequence_diagram(self, sequence_diagram):
         self.sequence_diagram = sequence_diagram
 
-    def sync_message(self, to, message, state=''):
+    def _get_state_char(self, active):
+        state = ""
+        if active is not None:
+            if active:
+                state = State.ACTIVATE
+            else:
+                state = State.DEACTIVATE
+        return state
+
+    def send(self, to, message, active=None):
+        state = self._get_state_char(active)
         self.sequence_diagram.add_record(f"{self.name}{Arrow.SYNC}{state}{to.name}:{message}")
 
-    def async_message(self, to, message, state=''):
+    def asend(self, to, message, active=None):
+        state = self._get_state_char(active)
         self.sequence_diagram.add_record(f"{self.name}{Arrow.ASYNC}{state}{to.name}:{message}")
 
-    def return_message(self, to, message, state=''):
+    def return_message(self, to, message, active=None):
+        state = self._get_state_char(active)
         self.sequence_diagram.add_record(f"{self.name}{Arrow.RETURN}{state}{to.name}:{message}")
 
     def self_message(self, message):
@@ -108,6 +120,6 @@ class Participant:
     def deactivate(self):
         self.sequence_diagram.add_record(f"deactivate {self.name}")
 
-    def call_and_wait_response(self, to, message, response_message="ok"):
-        self.sync_message(to, message, State.ACTIVATE)
+    def send_and_wait_response(self, to, message, response_message="ok"):
+        self.send(to, message, State.ACTIVATE)
         to.return_message(self, response_message, State.DEACTIVATE)

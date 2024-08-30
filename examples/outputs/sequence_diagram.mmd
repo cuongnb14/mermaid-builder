@@ -11,18 +11,18 @@ sequenceDiagram
     activate Github Runner
     Azure--)-Github Runner:Token
     Github Runner->>+MCR:Push docker image
-    MCR--)-Github Runner:ok
+    MCR--)+Github Runner:ok
     Github Runner->>+AKS:Check existing install
-    AKS--)-Github Runner:ok
+    AKS--)+Github Runner:ok
     Note right of AKS: Conditionally<br/>Force Uninstall
     Note over Github Runner, AKS: optional
     Github Runner->>+AKS:Helm Install dry run
-    AKS--)-Github Runner:ok
+    AKS--)+Github Runner:ok
     rect rgb(224, 255, 255)
         Github Runner->>+AKS:Helm Install
         Github Runner->>AKS:Check deployment status
         AKS->>+MCR:Pull docker image
-        MCR--)-AKS:ok
+        MCR--)+AKS:ok
         AKS->>AKS:Deploy app
         loop Wait
             AKS->>AKS:Check IP Address
