@@ -13,7 +13,11 @@ Install
 
 .. code-block::
 
+    # Latest
     pip install git+https://github.com/cuongnb14/mermaid-builder.git@main#egg=mermaid-builder
+
+    # v1.0.0
+    pip install git+https://github.com/cuongnb14/mermaid-builder.git@v1.0.0#egg=mermaid-builder
 
 Example
 =======
