@@ -98,3 +98,7 @@ class Participant:
 
     def deactivate(self):
         self.sequence_diagram.records.append(f"deactivate {self.name}")
+
+    def call_and_wait_response(self, to, message, response_message="ok"):
+        self.sync_message(to, message, State.ACTIVATE)
+        to.return_message(self, response_message, State.DEACTIVATE)

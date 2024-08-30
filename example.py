@@ -43,22 +43,21 @@ def test_sequence_diagram():
 
     azure.return_message(runner, message="Token", state=sd.State.DEACTIVATE)
 
-    runner.sync_message(mcr, message="Push docker image", state=sd.State.ACTIVATE)
-    mcr.return_message(runner, message="ok", state=sd.State.DEACTIVATE)
-
-    runner.sync_message(aks, message="Check existing install")
+    runner.call_and_wait_response(mcr, message="Push docker image")
+    runner.call_and_wait_response(aks, message="Check existing install")
     aks.note("Conditionally<br/>Force Uninstall")
     diagram.note_over("optional", runner, aks)
-    runner.sync_message(aks, message="Helm Install dry run")
-    runner.sync_message(aks, message="Helm Install")
-    runner.sync_message(aks, message="Check deployment status", state=sd.State.ACTIVATE)
 
-    aks.sync_message(mcr, message="Pull docker image", state=sd.State.ACTIVATE)
-    mcr.return_message(aks, message="docker image", state=sd.State.DEACTIVATE)
-    aks.sync_message(aks, message="Deploy app")
+    runner.call_and_wait_response(aks, message="Helm Install dry run")
+
+    runner.sync_message(aks, message="Helm Install", state=sd.State.ACTIVATE)
+    runner.sync_message(aks, message="Check deployment status", )
+
+    aks.call_and_wait_response(mcr, message="Pull docker image")
+    aks.self_message(message="Deploy app")
 
     with diagram.fragment(sd.Fragment.LOOP, "Wait") as _:
-        aks.sync_message(aks, message="Check IP Address")
+        aks.self_message(message="Check IP Address")
 
     aks.return_message(runner, message="IP Address", state=sd.State.DEACTIVATE)
     runner.deactivate()
