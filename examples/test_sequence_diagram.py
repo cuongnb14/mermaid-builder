@@ -1,6 +1,7 @@
 import os
 
 from mermaid_builder import sequence_diagram as sd
+from mermaid_builder.base import Color
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -26,17 +27,18 @@ def test_sequence_diagram():
 
     runner.call_and_wait_response(aks, message="Helm Install dry run")
 
-    runner.sync_message(aks, message="Helm Install", state=sd.State.ACTIVATE)
-    runner.sync_message(aks, message="Check deployment status")
+    with diagram.fragment(sd.Fragment.BACKGROUND, Color.hex_to_rgb(Color.ORANGE)) as _:
+        runner.sync_message(aks, message="Helm Install", state=sd.State.ACTIVATE)
+        runner.sync_message(aks, message="Check deployment status")
 
-    aks.call_and_wait_response(mcr, message="Pull docker image")
-    aks.self_message(message="Deploy app")
+        aks.call_and_wait_response(mcr, message="Pull docker image")
+        aks.self_message(message="Deploy app")
 
-    with diagram.fragment(sd.Fragment.LOOP, "Wait") as _:
-        aks.self_message(message="Check IP Address")
+        with diagram.fragment(sd.Fragment.LOOP, "Wait") as _:
+            aks.self_message(message="Check IP Address")
 
-    aks.return_message(runner, message="IP Address", state=sd.State.DEACTIVATE)
-    runner.deactivate()
+        aks.return_message(runner, message="IP Address", state=sd.State.DEACTIVATE)
+        runner.deactivate()
 
     diagram.save(current_dir + "/outputs/sequence_diagram.mmd")
     print(diagram.get_mermaid_live_url())

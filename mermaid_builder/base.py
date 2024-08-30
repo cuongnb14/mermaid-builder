@@ -22,7 +22,7 @@ class Color:
     def hex_to_rgb(hex_value):
         hex_value = hex_value.lstrip('#')
         rgb = tuple(int(hex_value[i:i+2], 16) for i in (0, 2, 4))
-        return f"rgb {rgb}"
+        return f"rgb{rgb}"
 
 
 class Icon:
