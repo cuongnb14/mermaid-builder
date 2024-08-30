@@ -121,5 +121,5 @@ class Participant:
         self.sequence_diagram.add_record(f"deactivate {self.name}")
 
     def send_and_wait_response(self, to, message, response_message="ok"):
-        self.send(to, message, State.ACTIVATE)
-        to.return_message(self, response_message, State.DEACTIVATE)
+        self.send(to, message, active=True)
+        to.return_message(self, response_message, active=False)
