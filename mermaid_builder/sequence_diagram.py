@@ -80,6 +80,9 @@ class Participant:
         self.is_actor = is_actor
         self.sequence_diagram.participants.append(self)
 
+    def set_sequence_diagram(self, sequence_diagram):
+        self.sequence_diagram = sequence_diagram
+
     def sync_message(self, to, message, state=''):
         self.sequence_diagram.add_record(f"{self.name}{Arrow.SYNC}{state}{to.name}:{message}")
 
