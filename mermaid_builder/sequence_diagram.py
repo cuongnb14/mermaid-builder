@@ -30,6 +30,10 @@ class SequenceDiagram(BaseDiagram):
         self.records = []
         self.participants = []
         self.actors = []
+        self.intent_index = 1
+        
+    def add_record(self, record):
+        self.records.append(self.intent_index * INTENT_CHAR + record)
 
     def draw(self):
         result = self.get_header_lines()
@@ -39,32 +43,34 @@ class SequenceDiagram(BaseDiagram):
                 result.append(f"{INTENT_CHAR}actor {participant.name}")
             else:
                 result.append(f"{INTENT_CHAR}participant {participant.name}")
-        result.extend([f"{INTENT_CHAR}{x}" for x in self.records])
+        result.extend(self.records)
         return "\n".join(result)
 
     def note_over(self, text, *participants):
         p = ", ".join([p.name for p in participants])
-        self.records.append(f"Note over {p}: {text}")
+        self.add_record(f"Note over {p}: {text}")
 
     def fragment(self, fg_type, name):
         @contextmanager
         def loop_context_manager():
-            self.records.append(f"{fg_type} {name}")
+            self.add_record(f"{fg_type} {name}")
+            self.intent_index += 1
             try:
                 yield
             finally:
-                self.records.append(f"end")
+                self.intent_index -= 1
+                self.add_record(f"end")
 
         return loop_context_manager()
 
     def fm_else(self, name=""):
-        self.records.append(f"else {name}")
+        self.add_record(f"else {name}")
 
     def fm_and(self, name):
-        self.records.append(f"and {name}")
+        self.add_record(f"and {name}")
 
     def fm_option(self, name):
-        self.records.append(f"option {name}")
+        self.add_record(f"option {name}")
 
 
 class Participant:
@@ -75,29 +81,29 @@ class Participant:
         self.sequence_diagram.participants.append(self)
 
     def sync_message(self, to, message, state=''):
-        self.sequence_diagram.records.append(f"{self.name}{Arrow.SYNC}{state}{to.name}:{message}")
+        self.sequence_diagram.add_record(f"{self.name}{Arrow.SYNC}{state}{to.name}:{message}")
 
     def async_message(self, to, message, state=''):
-        self.sequence_diagram.records.append(f"{self.name}{Arrow.ASYNC}{state}{to.name}:{message}")
+        self.sequence_diagram.add_record(f"{self.name}{Arrow.ASYNC}{state}{to.name}:{message}")
 
     def return_message(self, to, message, state=''):
-        self.sequence_diagram.records.append(f"{self.name}{Arrow.RETURN}{state}{to.name}:{message}")
+        self.sequence_diagram.add_record(f"{self.name}{Arrow.RETURN}{state}{to.name}:{message}")
 
     def self_message(self, message):
-        self.sequence_diagram.records.append(f"{self.name}{Arrow.SYNC}{self.name}:{message}")
+        self.sequence_diagram.add_record(f"{self.name}{Arrow.SYNC}{self.name}:{message}")
 
     def note(self, text, is_left=False):
         if is_left:
             r = f"Note left of {self.name}: {text}"
         else:
             r = f"Note right of {self.name}: {text}"
-        self.sequence_diagram.records.append(r)
+        self.sequence_diagram.add_record(r)
 
     def activate(self):
-        self.sequence_diagram.records.append(f"activate {self.name}")
+        self.sequence_diagram.add_record(f"activate {self.name}")
 
     def deactivate(self):
-        self.sequence_diagram.records.append(f"deactivate {self.name}")
+        self.sequence_diagram.add_record(f"deactivate {self.name}")
 
     def call_and_wait_response(self, to, message, response_message="ok"):
         self.sync_message(to, message, State.ACTIVATE)

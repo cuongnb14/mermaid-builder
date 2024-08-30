@@ -38,7 +38,7 @@ def test_sequence_diagram():
     aks.return_message(runner, message="IP Address", state=sd.State.DEACTIVATE)
     runner.deactivate()
 
-    diagram.save(current_dir + "./outputs/sequence_diagram.mmd")
+    diagram.save(current_dir + "/outputs/sequence_diagram.mmd")
     print(diagram.get_mermaid_live_url())
 
 

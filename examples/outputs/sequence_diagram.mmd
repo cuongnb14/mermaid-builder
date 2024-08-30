@@ -3,28 +3,28 @@ title: Simple Sequence Diagram
 ---
 %%{init: {"theme": "light", "themeVariables": {"fontFamily": "Monospace"}}}%%
 sequenceDiagram
-  actor Github Runner
-  participant Azure
-  participant MCR
-  participant AKS
-  Github Runner->>+Azure:Login
-  activate Github Runner
-  Azure--)-Github Runner:Token
-  Github Runner->>+MCR:Push docker image
-  MCR--)-Github Runner:ok
-  Github Runner->>+AKS:Check existing install
-  AKS--)-Github Runner:ok
-  Note right of AKS: Conditionally<br/>Force Uninstall
-  Note over Github Runner, AKS: optional
-  Github Runner->>+AKS:Helm Install dry run
-  AKS--)-Github Runner:ok
-  Github Runner->>+AKS:Helm Install
-  Github Runner->>AKS:Check deployment status
-  AKS->>+MCR:Pull docker image
-  MCR--)-AKS:ok
-  AKS->>AKS:Deploy app
-  loop Wait
-  AKS->>AKS:Check IP Address
-  end
-  AKS--)-Github Runner:IP Address
-  deactivate Github Runner
+    actor Github Runner
+    participant Azure
+    participant MCR
+    participant AKS
+    Github Runner->>+Azure:Login
+    activate Github Runner
+    Azure--)-Github Runner:Token
+    Github Runner->>+MCR:Push docker image
+    MCR--)-Github Runner:ok
+    Github Runner->>+AKS:Check existing install
+    AKS--)-Github Runner:ok
+    Note right of AKS: Conditionally<br/>Force Uninstall
+    Note over Github Runner, AKS: optional
+    Github Runner->>+AKS:Helm Install dry run
+    AKS--)-Github Runner:ok
+    Github Runner->>+AKS:Helm Install
+    Github Runner->>AKS:Check deployment status
+    AKS->>+MCR:Pull docker image
+    MCR--)-AKS:ok
+    AKS->>AKS:Deploy app
+    loop Wait
+        AKS->>AKS:Check IP Address
+    end
+    AKS--)-Github Runner:IP Address
+    deactivate Github Runner

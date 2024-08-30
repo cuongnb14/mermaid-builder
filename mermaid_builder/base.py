@@ -3,20 +3,26 @@ from dataclasses import dataclass
 
 from mermaid_builder.utils import get_mermaid_live_url
 
-INTENT_CHAR = '  '
+INTENT_CHAR = '    '
 
 
 class Color:
     GREEN = "#789e3e"
     BLUE = "#2873ba"
     YELLOW = "#daa840"
-    ORANGE = "#e07941 "
+    ORANGE = "#e07941"
     PURPLE = "#800080"
     RED = "#FF0000"
     CYAN = "#00FFFF"
     MAGENTA = "#FF00FF"
     WHITE = "#FFFFFF"
     BLACK = "#000000"
+
+    @staticmethod
+    def hex_to_rgb(hex_value):
+        hex_value = hex_value.lstrip('#')
+        rgb = tuple(int(hex_value[i:i+2], 16) for i in (0, 2, 4))
+        return f"rgb {rgb}"
 
 
 class Icon:
