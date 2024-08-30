@@ -31,7 +31,7 @@ class SequenceDiagram(BaseDiagram):
         self.participants = []
         self.actors = []
         self.intent_index = 1
-        
+
     def add_record(self, record):
         self.records.append(self.intent_index * INTENT_CHAR + record)
 

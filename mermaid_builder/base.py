@@ -21,7 +21,7 @@ class Color:
     @staticmethod
     def hex_to_rgb(hex_value):
         hex_value = hex_value.lstrip('#')
-        rgb = tuple(int(hex_value[i:i+2], 16) for i in (0, 2, 4))
+        rgb = tuple(int(hex_value[i : i + 2], 16) for i in (0, 2, 4))
         return f"rgb{rgb}"
 
 
@@ -82,3 +82,6 @@ class BaseDiagram:
 
     def get_mermaid_live_url(self):
         return get_mermaid_live_url(self.draw())
+
+    def print_mermaid_live_url(self):
+        print(f"{self.title}: {self.get_mermaid_live_url()}")
