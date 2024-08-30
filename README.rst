@@ -11,10 +11,12 @@ Mermaid Builder is a Python library designed to generate Mermaid diagram files (
 Install
 =======
 
-.. code-block::
+.. code-block:: shell
 
     # Latest
     pip install git+https://github.com/cuongnb14/mermaid-builder.git@main#egg=mermaid-builder
+
+.. code-block:: shell
 
     # v1.0.0
     pip install git+https://github.com/cuongnb14/mermaid-builder.git@v1.0.1#egg=mermaid-builder
