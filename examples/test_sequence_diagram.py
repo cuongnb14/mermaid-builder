@@ -27,7 +27,7 @@ def test_sequence_diagram():
 
     runner.call_and_wait_response(aks, message="Helm Install dry run")
 
-    with diagram.fragment(sd.Fragment.BACKGROUND, Color.hex_to_rgb(Color.ORANGE)) as _:
+    with diagram.fragment(sd.Fragment.BACKGROUND, Color.hex_to_rgb(Color.CYAN)) as _:
         runner.sync_message(aks, message="Helm Install", state=sd.State.ACTIVATE)
         runner.sync_message(aks, message="Check deployment status")
 

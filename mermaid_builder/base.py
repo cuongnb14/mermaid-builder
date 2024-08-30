@@ -7,14 +7,14 @@ INTENT_CHAR = '    '
 
 
 class Color:
-    GREEN = "#789e3e"
-    BLUE = "#2873ba"
-    YELLOW = "#daa840"
-    ORANGE = "#e07941"
+    GREEN = "#789E3E"
+    BLUE = "#2873BA"
+    YELLOW = "#DAA840"
+    ORANGE = "#E07941"
     PURPLE = "#800080"
-    RED = "#FF0000"
-    CYAN = "#00FFFF"
-    MAGENTA = "#FF00FF"
+    RED = "#E38A8A"
+    CYAN = "#E0FFFF"
+    MAGENTA = "#F57DF5"
     WHITE = "#FFFFFF"
     BLACK = "#000000"
 
