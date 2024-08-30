@@ -25,12 +25,13 @@ class Fragment:
 
 
 class SequenceDiagram(BaseDiagram):
-    def __init__(self, title, theme=None):
+    def __init__(self, title, theme=None, show_number=False):
         super().__init__(title, theme)
         self.records = []
         self.participants = []
         self.actors = []
         self.intent_index = 1
+        self.show_number = show_number
 
     def add_record(self, record):
         self.records.append(self.intent_index * INTENT_CHAR + record)
@@ -38,6 +39,8 @@ class SequenceDiagram(BaseDiagram):
     def draw(self):
         result = self.get_header_lines()
         result += ["sequenceDiagram"]
+        if self.show_number:
+            result += [f"{INTENT_CHAR}autonumber"]
         for participant in self.participants:
             if participant.is_actor:
                 result.append(f"{INTENT_CHAR}actor {participant.name}")

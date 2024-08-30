@@ -7,7 +7,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 def test_sequence_diagram():
-    diagram = sd.SequenceDiagram(title="Simple Sequence Diagram")
+    diagram = sd.SequenceDiagram(title="Simple Sequence Diagram", show_number=True)
 
     # Add Participants
     runner = sd.Participant(sequence_diagram=diagram, name="Github Runner", is_actor=True)
