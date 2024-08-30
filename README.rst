@@ -5,15 +5,19 @@ Mermaid Builder is a Python library designed to generate Mermaid diagram files (
 
 **Support Diagrams**
 
-- Flowcharts: Create flowcharts with various shapes, icons, and styles.
-- Sequence Diagrams: Generate sequence diagrams with participants, messages, and fragments.
+- **Flowcharts**: Create flowcharts with various shapes, icons, and styles.
+- **Sequence Diagrams**: Generate sequence diagrams with participants, messages, and fragments.
 
 Install
 =======
 
 .. code-block::
 
+    # Latest
     pip install git+https://github.com/cuongnb14/mermaid-builder.git@main#egg=mermaid-builder
+
+    # v1.0.0
+    pip install git+https://github.com/cuongnb14/mermaid-builder.git@v1.0.0#egg=mermaid-builder
 
 Example
 =======
