@@ -18,7 +18,7 @@ Install
 
 .. code-block:: shell
 
-    # v1.0.0
+    # Stable
     pip install git+https://github.com/cuongnb14/mermaid-builder.git@v1.0.1#egg=mermaid-builder
 
 Example
