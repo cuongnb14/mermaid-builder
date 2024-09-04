@@ -41,6 +41,7 @@ class Icon:
 class Theme:
     name: str = "light"
     font_family: str = "Monospace"
+    theme_css: str = ".edgeLabel p { padding: 0px 3px; }"
 
     def draw(self):
         data = {
@@ -48,6 +49,7 @@ class Theme:
             "themeVariables": {
                 "fontFamily": self.font_family,
             },
+            "themeCSS": self.theme_css,
         }
         return json.dumps(data)
 
