@@ -127,6 +127,7 @@ class Subgraph:
 
     def get_lines(self, indent=0):
         result = [
+            f"{INTENT_CHAR * indent}style {self.get_id()} rx:10,ry:10",
             f"{INTENT_CHAR * indent}subgraph {self.get_id()} [{self.name}]",
             f"{INTENT_CHAR * (indent + 1)}direction {self.direction}",
         ]
