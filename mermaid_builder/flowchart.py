@@ -103,6 +103,18 @@ class Subgraph:
         self.name = name
         self.direction = direction
         self.nodes = []
+        self.connections = []
+        
+    def add_connections(self, link, *nodes):
+        for node in nodes:
+            self.add_connection(next_node=node, link=link)
+    
+    def add_connection(self, next_node, link):
+        if not self.connections:
+            self.connections = []
+
+        self.connections.append(Connection(link=link, next_node=next_node))
+
 
     def get_id(self) -> str:
         return self.name.lower().replace(" ", "_")
@@ -119,8 +131,16 @@ class Subgraph:
             f"{INTENT_CHAR * (indent + 1)}direction {self.direction}",
         ]
         for node in self.nodes:
-            result.append(f"{INTENT_CHAR * (indent + 1)}{node.draw_node()}")
+            if isinstance(node, Subgraph):
+                result.extend(node.get_lines(indent + 1))
+            else:
+                result.append(f"{INTENT_CHAR * (indent + 1)}{node.draw_node()}")
         result.append(f"{INTENT_CHAR * indent}end")
+        
+        for connection in self.connections:
+            result.append(
+                f"{indent * INTENT_CHAR}{self.draw_node()}{connection.link.draw()}{connection.next_node.draw_node()}"
+            )
         return result
 
 
