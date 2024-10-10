@@ -9,15 +9,51 @@ class Direction:
 
 
 class NodeShape:
-    ROUND_EDGE = "(-)"
-    STADIUM = "([-])"
-    SUBROUTINE = "[[-]]"
-    CYLINDRICAL = "[(-)]"
-    CIRCLE = "((-))"
-    ASYMMETRIC = ">-]"
-    RHOMBUS = "{-}"
-    HEXAGON = "{{-}}"
-    # TODO: more shape
+    RECTANGLE = "rect"
+    ROUNDED_RECTANGLE = "rounded"
+    STADIUM = "stadium"
+    FRAMED_RECTANGLE = "fr-rect"
+    CYLINDER = "cyl"
+    CIRCLE = "circle"
+    ODD = "odd"
+    DIAMOND = "diam"
+    HEXAGON = "hex"
+    LEAN_RIGHT = "lean-r"
+    LEAN_LEFT = "lean-l"
+    TRAPEZOID_BASE_BOTTOM = "trap-b"
+    TRAPEZOID_BASE_TOP = "trap-t"
+    DOUBLE_CIRCLE = "dbl-circ"
+    TEXT_BLOCK = "text"
+    NOTCHED_RECTANGLE = "notch-rect"
+    LINED_RECTANGLE = "lin-rect"
+    SMALL_CIRCLE = "sm-circ"
+    FRAMED_CIRCLE = "fr-circ"
+    FILLED_RECTANGLE = "fork"
+    HOURGLASS = "hourglass"
+    CURLY_BRACE = "brace"
+    CURLY_BRACE_RIGHT = "brace-r"
+    CURLY_BRACES = "braces"
+    LIGHTNING_BOLT = "bolt"
+    DOCUMENT = "doc"
+    HALF_ROUNDED_RECTANGLE = "delay"
+    HORIZONTAL_CYLINDER = "h-cyl"
+    LINED_CYLINDER = "lin-cyl"
+    CURVED_TRAPEZOID = "curv-trap"
+    DIVIDED_RECTANGLE = "div-rect"
+    TRIANGLE = "tri"
+    WINDOW_PANE = "win-pane"
+    FILLED_CIRCLE = "f-circ"
+    LINED_DOCUMENT = "lin-doc"
+    TRAPEZOIDAL_PENTAGON = "notch-pent"
+    FLIPPED_TRIANGLE = "flip-tri"
+    SLOPED_RECTANGLE = "sl-rect"
+    STACKED_DOCUMENT = "docs"
+    STACKED_RECTANGLE = "st-rect"
+    FLAG = "flag"
+    BOW_TIE_RECTANGLE = "bow-rect"
+    CROSSED_CIRCLE = "cross-circ"
+    TAGGED_DOCUMENT = "tag-doc"
+    TAGGED_RECTANGLE = "tag-rect"
 
 
 class LinkShape:
@@ -55,10 +91,12 @@ class Node:
         else:
             text = self.name
 
-        round_chars = self.shape.split("-")
-        result = f"{self.get_id()}{round_chars[0]}{text}{round_chars[1]}"
         if self.class_name:
-            result += f":::{self.class_name}"
+            result = f"{self.get_id()}:::{self.class_name}@"
+        else:
+            result = f"{self.get_id()}@"
+        result += "{" + f'shape: {self.shape}, label: "{text}"' + '}'
+
         return result
 
     def get_lines(self, indent=0):
@@ -104,17 +142,16 @@ class Subgraph:
         self.direction = direction
         self.nodes = []
         self.connections = []
-        
+
     def add_connections(self, link, *nodes):
         for node in nodes:
             self.add_connection(next_node=node, link=link)
-    
+
     def add_connection(self, next_node, link):
         if not self.connections:
             self.connections = []
 
         self.connections.append(Connection(link=link, next_node=next_node))
-
 
     def get_id(self) -> str:
         return self.name.lower().replace(" ", "_")
@@ -137,7 +174,7 @@ class Subgraph:
             else:
                 result.append(f"{INTENT_CHAR * (indent + 1)}{node.draw_node()}")
         result.append(f"{INTENT_CHAR * indent}end")
-        
+
         for connection in self.connections:
             result.append(
                 f"{indent * INTENT_CHAR}{self.draw_node()}{connection.link.draw()}{connection.next_node.draw_node()}"

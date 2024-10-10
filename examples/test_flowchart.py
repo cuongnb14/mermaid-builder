@@ -10,12 +10,12 @@ def test_flowchart():
     chart = Flowchart(title="Simple Flowchart")
 
     # Declare nodes
-    user_node = Node(name="User", shape=NodeShape.ROUND_EDGE, icon=Icon.USER)
-    elb_node = Node(name="ELB", shape=NodeShape.ROUND_EDGE, icon=Icon.LOAD_BALANCER, class_name="gateway")
-    order_node = Node(name="Order Service", shape=NodeShape.ROUND_EDGE, class_name="api")
-    payment_node = Node(name="Payment Service", shape=NodeShape.ROUND_EDGE, class_name="api")
-    redis_node = Node(name="Redis", shape=NodeShape.ROUND_EDGE, class_name="storage")
-    db_node = Node(name="DB", shape=NodeShape.ROUND_EDGE, icon=Icon.DATABASE, class_name="storage")
+    user_node = Node(name="User", shape=NodeShape.ROUNDED_RECTANGLE, icon=Icon.USER)
+    elb_node = Node(name="ELB", shape=NodeShape.ROUNDED_RECTANGLE, icon=Icon.LOAD_BALANCER, class_name="gateway")
+    order_node = Node(name="Order Service", shape=NodeShape.ROUNDED_RECTANGLE, class_name="api")
+    payment_node = Node(name="Payment Service", shape=NodeShape.ROUNDED_RECTANGLE, class_name="api")
+    redis_node = Node(name="Redis", shape=NodeShape.ROUNDED_RECTANGLE, class_name="storage")
+    db_node = Node(name="DB", shape=NodeShape.CYLINDER, icon=Icon.DATABASE, class_name="storage")
 
     # Declare node connections (edges)
     user_node.add_connections(Link(text="call"), elb_node)
