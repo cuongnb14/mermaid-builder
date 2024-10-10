@@ -10,19 +10,21 @@ def test_flowchart():
     chart = Flowchart(title="Simple Flowchart")
 
     # Declare nodes
+    subgraph = Subgraph(name="Storage")
+
     user_node = Node(name="User", shape=NodeShape.ROUNDED_RECTANGLE, icon=Icon.USER)
     elb_node = Node(name="ELB", shape=NodeShape.ROUNDED_RECTANGLE, icon=Icon.LOAD_BALANCER, class_name="gateway")
+
     order_node = Node(name="Order Service", shape=NodeShape.ROUNDED_RECTANGLE, class_name="api")
     payment_node = Node(name="Payment Service", shape=NodeShape.ROUNDED_RECTANGLE, class_name="api")
-    redis_node = Node(name="Redis", shape=NodeShape.ROUNDED_RECTANGLE, class_name="storage")
-    db_node = Node(name="DB", shape=NodeShape.CYLINDER, icon=Icon.DATABASE, class_name="storage")
+
+    redis_node = Node(name="Redis", shape=NodeShape.ROUNDED_RECTANGLE, class_name="storage", subgraph=subgraph)
+    db_node = Node(name="DB", shape=NodeShape.CYLINDER, icon=Icon.DATABASE, class_name="storage", subgraph=subgraph)
 
     # Declare node connections (edges)
     user_node.add_connections(Link(text="call"), elb_node)
     elb_node.add_connections(Link(), order_node, payment_node)
     order_node.add_connections(Link(), redis_node, db_node)
-    subgraph = Subgraph(name="Storage")
-    subgraph.add_nodes(redis_node, db_node)
     payment_node.add_connections(Link(), subgraph)
 
     # Add items to chart (nodes or subgraph)

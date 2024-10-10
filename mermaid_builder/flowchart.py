@@ -64,13 +64,68 @@ class LinkShape:
     THICK = "==>"
 
 
-@dataclass
+class Subgraph:
+    def __init__(self, name, direction=Direction.TB):
+        self.name = name
+        self.direction = direction
+        self.nodes = []
+        self.connections = []
+
+    def add_connections(self, link, *nodes):
+        for node in nodes:
+            self.add_connection(next_node=node, link=link)
+
+    def add_connection(self, next_node, link):
+        if not self.connections:
+            self.connections = []
+
+        self.connections.append(Connection(link=link, next_node=next_node))
+
+    def get_id(self) -> str:
+        return self.name.lower().replace(" ", "_")
+
+    def add_nodes(self, *nodes):
+        self.nodes.extend(nodes)
+
+    def draw_node(self):
+        return self.get_id()
+
+    def get_lines(self, indent=0):
+        result = [
+            f"{INTENT_CHAR * indent}style {self.get_id()} rx:10,ry:10",
+            f"{INTENT_CHAR * indent}subgraph {self.get_id()} [{self.name}]",
+            f"{INTENT_CHAR * (indent + 1)}direction {self.direction}",
+        ]
+        for node in self.nodes:
+            if isinstance(node, Subgraph):
+                result.extend(node.get_lines(indent + 1))
+            else:
+                result.append(f"{INTENT_CHAR * (indent + 1)}{node.draw_node()}")
+        result.append(f"{INTENT_CHAR * indent}end")
+
+        for connection in self.connections:
+            result.append(
+                f"{indent * INTENT_CHAR}{self.draw_node()}{connection.link.draw()}{connection.next_node.draw_node()}"
+            )
+        return result
+
+
 class Node:
     name: str
-    shape: NodeShape
+    shape: NodeShape = NodeShape.ROUNDED_RECTANGLE
     connections: list = ()
     class_name: str = ""
     icon: str = ""
+
+    def __init__(self, name: str, shape: NodeShape = NodeShape.ROUNDED_RECTANGLE, class_name: str = "", icon: str = "",
+                 connections: list = (), subgraph: Subgraph = None):
+        self.name = name
+        self.shape = shape
+        self.class_name = class_name
+        self.icon = icon
+        self.connections = connections
+        if subgraph:
+            subgraph.add_nodes(self)
 
     def get_id(self) -> str:
         return self.name.lower().replace(" ", "_")
@@ -134,52 +189,6 @@ class Link:
 class Connection:
     link: Link
     next_node: Node
-
-
-class Subgraph:
-    def __init__(self, name, direction=Direction.TB):
-        self.name = name
-        self.direction = direction
-        self.nodes = []
-        self.connections = []
-
-    def add_connections(self, link, *nodes):
-        for node in nodes:
-            self.add_connection(next_node=node, link=link)
-
-    def add_connection(self, next_node, link):
-        if not self.connections:
-            self.connections = []
-
-        self.connections.append(Connection(link=link, next_node=next_node))
-
-    def get_id(self) -> str:
-        return self.name.lower().replace(" ", "_")
-
-    def add_nodes(self, *nodes):
-        self.nodes.extend(nodes)
-
-    def draw_node(self):
-        return self.get_id()
-
-    def get_lines(self, indent=0):
-        result = [
-            f"{INTENT_CHAR * indent}style {self.get_id()} rx:10,ry:10",
-            f"{INTENT_CHAR * indent}subgraph {self.get_id()} [{self.name}]",
-            f"{INTENT_CHAR * (indent + 1)}direction {self.direction}",
-        ]
-        for node in self.nodes:
-            if isinstance(node, Subgraph):
-                result.extend(node.get_lines(indent + 1))
-            else:
-                result.append(f"{INTENT_CHAR * (indent + 1)}{node.draw_node()}")
-        result.append(f"{INTENT_CHAR * indent}end")
-
-        for connection in self.connections:
-            result.append(
-                f"{indent * INTENT_CHAR}{self.draw_node()}{connection.link.draw()}{connection.next_node.draw_node()}"
-            )
-        return result
 
 
 @dataclass
